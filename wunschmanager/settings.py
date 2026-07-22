@@ -13,6 +13,8 @@ DEBUG = config.getboolean('django', 'DEBUG')
 
 ALLOWED_HOSTS = config.get('django', 'ALLOWED_HOSTS').split(',')
 
+CSRF_TRUSTED_ORIGINS = config.get('django', 'CSRF_TRUSTED_ORIGINS').split(',')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
