@@ -1,0 +1,107 @@
+{% extends 'wunschliste/base.html' %}
+
+{% block title %}Wunsch bearbeiten{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'create_wish' %}">
+            <i class="bi bi-pencil-fill text-primary"></i> Wunsch bearbeiten
+        </a>
+        <div class="navbar-nav ms-auto">
+            <span class="navbar-text text-muted">
+                <i class="bi bi-shield-lock"></i> Admin-Modus
+            </span>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container" style="margin-top: 80px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-pencil"></i> Wunsch bearbeiten
+                    </h3>
+                    
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Bezeichnung *</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <div class="text-danger">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="link" class="form-label">Link zum Produkt</label>
+                            {{ form.link }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Bild</label>
+                            
+                            {% if wish.image %}
+                            <div class="mb-3">
+                                <img src="{{ wish.image.url }}" class="img-thumbnail" style="max-height: 200px;" alt="{{ wish.title }}">
+                                <p class="form-text">Aktuelles Bild</p>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mb-2">
+                                <label for="image" class="form-label">Neues Bild hochladen:</label>
+                                {{ form.image }}
+                                {% if form.image.errors %}
+                                <div class="text-danger">{{ form.image.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <label for="image_url" class="form-label">Oder Bild-URL:</label>
+                                {{ form.image_url }}
+                                {% if form.image_url.errors %}
+                                <div class="text-danger">{{ form.image_url.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="price" class="form-label">Preis (€)</label>
+                                {{ form.price }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="urgency" class="form-label">Dringlichkeit</label>
+                                {{ form.urgency }}
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Speichern
+                            </button>
+                            <a href="{% url 'create_wish' %}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Abbrechen
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

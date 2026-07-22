@@ -1,0 +1,7 @@
+config.ini
+.venv/
+db.sqlite3
+wunschmanager/__pycache__/
+wunschliste/__pycache__/
+media/
+wunschliste/migrations/__pycache__/

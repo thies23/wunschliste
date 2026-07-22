@@ -1,0 +1,152 @@
+{% extends 'wunschliste/base.html' %}
+
+{% block title %}Wunsch erstellen{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'create_wish' %}">
+            <i class="bi bi-plus-circle-fill text-primary"></i> Wünsche verwalten
+        </a>
+        <div class="navbar-nav ms-auto">
+            <span class="navbar-text text-muted">
+                <i class="bi bi-shield-lock"></i> Admin-Modus
+            </span>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container" style="margin-top: 80px;">
+    <div class="row">
+        <!-- Form Column -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-plus-circle"></i> 
+                        {% if editing %}Wunsch bearbeiten{% else %}Neuen Wunsch anlegen{% endif %}
+                    </h3>
+                    
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Bezeichnung *</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <div class="text-danger">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="link" class="form-label">Link zum Produkt</label>
+                            {{ form.link }}
+                            <div class="form-text">URL zum Online-Shop</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Bild</label>
+                            <div class="mb-2">
+                                <label for="image" class="form-label">Bild hochladen:</label>
+                                {{ form.image }}
+                                {% if form.image.errors %}
+                                <div class="text-danger">{{ form.image.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <label for="image_url" class="form-label">Oder Bild-URL:</label>
+                                {{ form.image_url }}
+                                {% if form.image_url.errors %}
+                                <div class="text-danger">{{ form.image_url.errors }}</div>
+                                {% endif %}
+                                <div class="form-text">Nur eine Option verwenden</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="price" class="form-label">Preis (€)</label>
+                                {{ form.price }}
+                                {% if form.price.errors %}
+                                <div class="text-danger">{{ form.price.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="urgency" class="form-label">Dringlichkeit</label>
+                                {{ form.urgency }}
+                                {% if form.urgency.errors %}
+                                <div class="text-danger">{{ form.urgency.errors }}</div>
+                                {% endif %}
+                                <div class="form-text">1 = nicht so dringend, 5 = sehr dringend</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> 
+                                {% if editing %}Speichern{% else %}Wunsch erstellen{% endif %}
+                            </button>
+                            {% if editing %}
+                            <a href="{% url 'create_wish' %}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Abbrechen
+                            </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wishes List Column -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-list"></i> Alle Wünsche</h5>
+                </div>
+                <div class="card-body">
+                    {% if wishes %}
+                    <div class="list-group list-group-flush">
+                        {% for wish in wishes %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ wish.title }}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    <span class="urgency-badge urgency-{{ wish.urgency }}">
+                                        {{ wish.urgency }}/5
+                                    </span>
+                                    {{ wish.price|floatformat:2 }} €
+                                </small>
+                            </div>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{% url 'edit_wish' wish.id %}" class="btn btn-outline-primary" title="Bearbeiten">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'delete_wish' wish.id %}" class="btn btn-outline-danger" title="Löschen">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">Noch keine Wünsche angelegt.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
