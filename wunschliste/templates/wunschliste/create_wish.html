@@ -119,7 +119,7 @@
                     {% if wishes %}
                     <div class="list-group list-group-flush">
                         {% for wish in wishes %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="list-group-item d-flex justify-content-between align-items-start">
                             <div>
                                 <strong>{{ wish.title }}</strong>
                                 <br>
@@ -128,6 +128,16 @@
                                         {{ wish.urgency }}/5
                                     </span>
                                     {{ wish.price|floatformat:2 }} €
+                                    {% if wish.image %}
+                                    <span class="badge bg-info ms-2" title="Bild hochgeladen">
+                                        <i class="bi bi-image"></i>
+                                    </span>
+                                    {% endif %}
+                                    {% if wish.image_url %}
+                                    <span class="badge bg-info ms-2" title="Bild-URL">
+                                        <i class="bi bi-link"></i>
+                                    </span>
+                                    {% endif %}
                                 </small>
                             </div>
                             <div class="btn-group btn-group-sm" role="group">

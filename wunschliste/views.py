@@ -128,11 +128,20 @@ def gift_wish(request, wish_id):
 def create_wish(request):
     
     if request.method == 'POST':
-        form = WishForm(request.POST)
+        form = WishForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            wish = form.save()
+            if wish.image:
+                print(f"Image: {wish.image}")
+                print(f"Image URL: {wish.image.url}")
+                print(f"Image path: {wish.image.path}")
+            else:
+                print(f"Image: None")
             messages.success(request, 'Wunsch erfolgreich erstellt!')
             return redirect('create_wish')
+        else:
+            print(f"Form errors: {form.errors}")
+            messages.error(request, 'Bitte überprüfe die Eingaben.')
     else:
         form = WishForm()
     
@@ -143,8 +152,6 @@ def create_wish(request):
         'wishes': wishes,
     }
     return render(request, 'wunschliste/create_wish.html', context)
-
-
 
 @simple_auth_required(
     'CREATE_WISH_USERNAME',
