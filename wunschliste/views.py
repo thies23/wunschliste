@@ -54,6 +54,7 @@ def public_wishes(request):
                 {
                     'id': w.id,
                     'title': w.title,
+                    'description': w.description,
                     'link': w.link,
                     'image': w.image.url if w.image else (w.image_url or ''),
                     'price': str(w.price),
