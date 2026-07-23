@@ -30,22 +30,44 @@ def public_view_login(request):
     return render(request, 'wunschliste/login.html', context)
 
 
-def _wish_image_url(wish):
-    if wish.image:
-        try:
-            return wish.image.url
-        except ValueError:
-            return ''
-    if wish.image_url:
-        return wish.image_url
-    return ''
-
-
 def public_wishes(request):
     if not request.session.get('public_view_authenticated'):
         return redirect('public_view_login')
     
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        wishes = Wish.objects.filter(is_available=True)
+        sort_by = request.GET.get('sort', 'urgency')
+        
+        if sort_by == 'price':
+            wishes = wishes.order_by('price')
+        elif sort_by == 'shop':
+            wishes = wishes.order_by('link')
+        elif sort_by == 'alphabet':
+            wishes = wishes.order_by('title')
+        elif sort_by == 'urgency':
+            wishes = wishes.order_by('-urgency')
+        else:
+            wishes = wishes.order_by('-urgency')
+        
+        data = {
+            'wishes': [
+                {
+                    'id': w.id,
+                    'title': w.title,
+                    'description': w.description,
+                    'link': w.link,
+                    'image': w.image.url if w.image else (w.image_url or ''),
+                    'price': str(w.price),
+                    'urgency': w.urgency,
+                    'is_available': w.is_available,
+                }
+                for w in wishes
+            ]
+        }
+        return JsonResponse(data)
+    
     sort_by = request.GET.get('sort', 'urgency')
+    
     wishes = Wish.objects.filter(is_available=True)
     
     if sort_by == 'price':
@@ -58,26 +80,6 @@ def public_wishes(request):
         wishes = wishes.order_by('-urgency')
     else:
         wishes = wishes.order_by('-urgency')
-    
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        data = {
-            'wishes': [
-                {
-                    'id': w.id,
-                    'title': w.title,
-                    'description': w.description or '',
-                    'link': w.link or '',
-                    'image': _wish_image_url(w),
-                    'price': str(w.price),
-                    'urgency': w.urgency,
-                    'is_available': w.is_available,
-                    'is_reserved': w.is_reserved,
-                    'reserved_by': w.reserved_by or '',
-                }
-                for w in wishes
-            ]
-        }
-        return JsonResponse(data)
     
     context = {
         'wishes': wishes,
@@ -125,6 +127,7 @@ def gift_wish(request, wish_id):
     'create_wish_login'
 )
 def create_wish(request):
+    
     if request.method == 'POST':
         form = WishForm(request.POST, request.FILES)
         if form.is_valid():
@@ -134,7 +137,7 @@ def create_wish(request):
                 print(f"Image URL: {wish.image.url}")
                 print(f"Image path: {wish.image.path}")
             else:
-                print("Image: None")
+                print(f"Image: None")
             messages.success(request, 'Wunsch erfolgreich erstellt!')
             return redirect('create_wish')
         else:
@@ -195,7 +198,9 @@ def delete_wish(request, wish_id):
     return render(request, 'wunschliste/delete_wish.html', context)
 
 
+
 def create_wish_login(request):
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -213,12 +218,14 @@ def create_wish_login(request):
     })
 
 
+
 @simple_auth_required(
     'GIFT_HISTORY_USERNAME',
     'GIFT_HISTORY_PASSWORD',
     'gift_history_login'
 )
 def gift_history(request):
+    
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         if request.method == 'POST':
             transaction_id = request.POST.get('transaction_id')
@@ -247,6 +254,7 @@ def gift_history(request):
 
 
 def gift_history_login(request):
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
