@@ -5,6 +5,7 @@ from django.utils import timezone
 class Wish(models.Model):
     name = models.CharField("Name des Schenkers", max_length=100, blank=True, null=True)
     title = models.CharField("Bezeichnung", max_length=200)
+    description = models.TextField("Beschreibung", blank=True, null=True)
     link = models.URLField("Link", blank=True, null=True)
     image = models.ImageField("Bild", upload_to='wish_images/', blank=True, null=True, 
                              help_text="Produktbild hochladen")

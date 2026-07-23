@@ -87,6 +87,7 @@
                     <button class="btn btn-primary w-100 wish-detail-btn" 
                             data-wish-id="{{ wish.id }}"
                             data-wish-title="{{ wish.title }}"
+                            data-wish-description="{{ wish.description }}"
                             data-wish-price="{{ wish.price }}"
                             data-wish-urgency="{{ wish.urgency }}"
                             data-wish-link="{{ wish.link|default:'' }}"
@@ -134,6 +135,7 @@ document.addEventListener('click', function(e) {
         
         const wishId = btn.getAttribute('data-wish-id');
         const wishTitle = btn.getAttribute('data-wish-title');
+        const wishDescription = btn.getAttribute('data-wish-description');
         const wishPrice = btn.getAttribute('data-wish-price');
         const wishUrgency = btn.getAttribute('data-wish-urgency');
         const wishLink = btn.getAttribute('data-wish-link');
@@ -148,9 +150,7 @@ document.addEventListener('click', function(e) {
         let popoverContent = `
             <div class="popover-body"><div class="p-3">
                 <h5 class="mb-3">${wishTitle}</h5>
-                ${wishImage ? `<img src="${wishImage}" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover;">` : '<div class="bg-light rounded mb-3 p-4 text-center"><i class="bi bi-gift fs-1"></i></div>'}
-                <p class="mb-2"><strong>Preis:</strong> ${wishPrice} €</p>
-                <p class="mb-2"><strong>Dringlichkeit:</strong> ${wishUrgency}/5</p>
+                <p class="mb-2"><strong>Beschreibung:</strong> ${wishDescription}</p>
                 ${wishLink ? `<p class="mb-3"><a href="${wishLink}" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Zum Produkt</a></p>` : ''}
                 <hr>
         `;
@@ -176,7 +176,7 @@ document.addEventListener('click', function(e) {
                     <form class="gift-form" onsubmit="submitGift(event, ${wishId})">
                         <div class="mb-2">
                             <label for="giver-name-${wishId}" class="form-label">Dein Name:</label>
-                            <input type="text" class="form-control" id="giver-name-${wishId}" required placeholder="Max Mustermann">
+                            <input type="text" class="form-control" id="giver-name-${wishId}" required placeholder="Dein Name">
                         </div>
                         <button type="submit" class="btn btn-success w-100">
                             <i class="bi bi-check-circle"></i> Diesen Gegenstand Schenken

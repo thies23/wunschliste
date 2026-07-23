@@ -31,11 +31,15 @@ class GiverNameForm(forms.Form):
 class WishForm(forms.ModelForm):
     class Meta:
         model = Wish
-        fields = ['title', 'link', 'image', 'image_url', 'price', 'urgency']
+        fields = ['title', 'description', 'link', 'image', 'image_url', 'price', 'urgency']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Produktbezeichnung'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Kurze Beschreibung'
             }),
             'link': forms.URLInput(attrs={
                 'class': 'form-control',
