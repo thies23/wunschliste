@@ -149,6 +149,9 @@
                                 <a href="{% url 'edit_wish' wish.id %}" class="btn btn-outline-primary" title="Bearbeiten">
                                     <i class="bi bi-pencil"></i>
                                 </a>
+                                <a href="{% url 'duplicate_wish' wish.id %}" class="btn btn-outline-secondary" title="Duplizieren">
+                                    <i class="bi bi-files"></i>
+                                </a>
                                 <a href="{% url 'delete_wish' wish.id %}" class="btn btn-outline-danger" title="Löschen">
                                     <i class="bi bi-trash"></i>
                                 </a>

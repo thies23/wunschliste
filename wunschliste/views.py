@@ -178,6 +178,30 @@ def edit_wish(request, wish_id):
     }
     return render(request, 'wunschliste/edit_wish.html', context)
 
+@simple_auth_required(
+    'CREATE_WISH_USERNAME',
+    'CREATE_WISH_PASSWORD',
+    'create_wish_login'
+)
+def duplicate_wish(request, wish_id):
+    original = get_object_or_404(Wish, id=wish_id)
+    
+    new_wish = Wish(
+        title=original.title,
+        description=original.description,
+        link=original.link,
+        image=original.image,
+        image_url=original.image_url,
+        price=original.price,
+        urgency=original.urgency,
+        is_available=True,
+        name=None,
+        gifted_at=None,
+    )
+    new_wish.save()
+    
+    messages.success(request, f'Wunsch "{original.title}" wurde dupliziert.')
+    return redirect('create_wish')
 
 @simple_auth_required(
     'CREATE_WISH_USERNAME',

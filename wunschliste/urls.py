@@ -10,7 +10,8 @@ urlpatterns = [
     path('create-wish/login/', views.create_wish_login, name='create_wish_login'),
     path('create-wish/edit/<int:wish_id>/', views.edit_wish, name='edit_wish'),
     path('create-wish/delete/<int:wish_id>/', views.delete_wish, name='delete_wish'),
-
+    path('create-wish/duplicate/<int:wish_id>/', views.duplicate_wish, name='duplicate_wish'),
+    
     path('gift-history/', views.gift_history, name='gift_history'),
     path('gift-history/login/', views.gift_history_login, name='gift_history_login'),
 ]
