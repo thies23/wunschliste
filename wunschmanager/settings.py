@@ -95,6 +95,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 PUBLIC_VIEW_PASSWORD = config.get('public_view', 'PASSWORD')
 PUBLIC_VIEW_HELP_TEXT = config.get('public_view', 'HELP_TEXT')
+SYSTEMNAME = config.get('public_view', "SYSTEMNAME")
 CONTACT_EMAIL = config.get('contact', 'EMAIL')
 CREATE_WISH_USERNAME = config.get('authentication', 'CREATE_WISH_USERNAME')
 CREATE_WISH_PASSWORD = config.get('authentication', 'CREATE_WISH_PASSWORD')

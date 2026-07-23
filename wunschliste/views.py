@@ -25,6 +25,7 @@ def public_view_login(request):
     context = {
         'form': form,
         'help_text': settings.PUBLIC_VIEW_HELP_TEXT,
+        'systemname': settings.SYSTEMNAME,
         'contact_email': settings.CONTACT_EMAIL,
     }
     return render(request, 'wunschliste/login.html', context)
@@ -83,6 +84,7 @@ def public_wishes(request):
     
     context = {
         'wishes': wishes,
+        'systemname': settings.SYSTEMNAME,
         'sort_by': sort_by,
         'contact_email': settings.CONTACT_EMAIL,
     }
@@ -150,6 +152,7 @@ def create_wish(request):
     
     context = {
         'form': form,
+        'systemname': settings.SYSTEMNAME,
         'wishes': wishes,
     }
     return render(request, 'wunschliste/create_wish.html', context)
@@ -173,6 +176,7 @@ def edit_wish(request, wish_id):
     
     context = {
         'form': form,
+        'systemname': settings.SYSTEMNAME,
         'wish': wish,
         'editing': True,
     }
@@ -218,6 +222,7 @@ def delete_wish(request, wish_id):
     
     context = {
         'wish': wish,
+        'systemname': settings.SYSTEMNAME,
     }
     return render(request, 'wunschliste/delete_wish.html', context)
 
@@ -273,6 +278,7 @@ def gift_history(request):
     
     context = {
         'transactions': transactions,
+        'systemname': settings.SYSTEMNAME,
     }
     return render(request, 'wunschliste/gift_history.html', context)
 

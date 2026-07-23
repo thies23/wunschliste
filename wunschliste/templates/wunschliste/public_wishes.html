@@ -1,6 +1,6 @@
 {% extends 'wunschliste/base.html' %}
 
-{% block title %}Wunschliste - Alle Wünsche{% endblock %}
+{% block title %}{{ systemname }} - Alle Wünsche{% endblock %}
 
 {% block content %}
 
@@ -32,11 +32,11 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{% url 'public_wishes' %}">
-            <i class="bi bi-gift-fill text-primary"></i> Wunschliste
+            <i class="bi bi-gift-fill text-primary"></i> {{ systemname }}
         </a>
         <div class="navbar-nav ms-auto">
             <span class="navbar-text text-muted">
-                <i class="bi bi-shield-lock"></i> Angemeldet
+                <i class="bi bi-shield-lock"></i> Gast
             </span>
         </div>
     </div>
