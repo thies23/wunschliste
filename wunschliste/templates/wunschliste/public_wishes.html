@@ -56,7 +56,7 @@
             <div class="card h-100 wish-card {% if wish.is_reserved %}border-warning{% endif %}">
                 {% if wish.image %}
                 <img src="{{ wish.image }}" class="product-image" alt="Bild von {{ wish.title }}" onerror="this.style.display='none'">
-                {% elseif wish.image_url %}
+                {% elif wish.image_url %}
                 <img src="{{ wish.image_url }}" class="product-image" alt="Bild von {{ wish.title }}" onerror="this.style.display='none'">
                 {% else %}
                 <div class="product-image d-flex align-items-center justify-content-center bg-light">
