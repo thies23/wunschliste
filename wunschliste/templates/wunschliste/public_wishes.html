@@ -3,6 +3,31 @@
 {% block title %}Wunschliste - Alle Wünsche{% endblock %}
 
 {% block content %}
+
+<style>
+    .urgency-bar {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 0.25rem;
+    }
+    .urgency-bar-segment {
+        flex: 1;
+        height: 6px;
+        border-radius: 999px;
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+    .urgency-bar-segment.filled-1 { background-color: #28a745; }   /* niedrig */
+    .urgency-bar-segment.filled-2 { background-color: #17a2b8; }
+    .urgency-bar-segment.filled-3 { background-color: #ffc107; }
+    .urgency-bar-segment.filled-4 { background-color: #fd7e14; }
+    .urgency-bar-segment.filled-5 { background-color: #dc3545; }   /* sehr hoch */
+
+    .urgency-label {
+        font-size: 0.8rem;
+        color: #f8f9fa;
+    }
+</style>
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
@@ -70,9 +95,18 @@
                         <i class="bi bi-hand-thumbs-up"></i> Von {{ wish.reserved_by }} übernommen
                     </span>
                     {% else %}
-                    <span class="urgency-badge urgency-{{ wish.urgency }} mb-2">
-                        Dringlichkeit: {{ wish.urgency }}/5
-                    </span>
+                    <div class="mb-2">
+                        <div class="urgency-bar">
+                            {% for i in "12345" %}
+                            {% with segment=i|add:""|int %}
+                            <div class="urgency-bar-segment {% if segment <= wish.urgency %}filled-{{ wish.urgency }}{% endif %}"></div>
+                            {% endwith %}
+                            {% endfor %}
+                        </div>
+                        <div class="urgency-label">
+                            Wie gerne hätte ich das: {{ wish.urgency }}/5
+                        </div>
+                    </div>
                     {% endif %}
                     
                     <h5 class="card-title">{{ wish.title }}</h5>
@@ -386,7 +420,7 @@ function cancelReservation(wishId) {
                 if (warningBadge) {
                     warningBadge.outerHTML = `
                         <span class="urgency-badge urgency-${urgencyText} mb-2">
-                            Dringlichkeit: ${urgencyText}/5
+                            Wie gerne hätte ich das: ${urgencyText}/5
                         </span>
                     `;
                 }
@@ -447,7 +481,7 @@ function sortWishes(sortBy) {
                 </span>`;
             } else {
                 badgeHtml = `<span class="urgency-badge urgency-${wish.urgency} mb-2">
-                    Dringlichkeit: ${wish.urgency}/5
+                    Wie gerne hätte ich das: ${wish.urgency}/5
                 </span>`;
             }
             
